@@ -8,8 +8,9 @@ def build_report(scan, findings, risk, attack_paths):
 
     return {
         "project": scan.get("project", "KernelShield"),
-        "version": scan.get("version", "unknown"),
-        "timestamp": datetime.now().isoformat(),
+"version": scan.get("version", "unknown"),
+"timestamp": datetime.now().isoformat(),
+"scan_mode": scan.get("scan_mode", "Standard"),
 
         "system": scan.get("system", {}),
 

@@ -1,3 +1,4 @@
+from pathlib import Path
 import json
 import subprocess
 
@@ -78,20 +79,42 @@ def get_sgid_files():
 
 
 def get_capabilities():
-    """Find files with Linux capabilities."""
+    """Find Linux file capabilities in common executable locations."""
 
-    result = subprocess.run(
-        ["getcap", "-r", "/"],
-        capture_output=True,
-        text=True,
-        timeout=60
-    )
-
-    return [
-        line
-        for line in result.stdout.splitlines()
-        if line
+    search_paths = [
+        "/bin",
+        "/sbin",
+        "/usr/bin",
+        "/usr/sbin",
+        "/usr/lib",
+        "/usr/libexec",
+        "/lib",
+        "/lib64",
+        "/opt",
     ]
+
+    existing_paths = [
+        path
+        for path in search_paths
+        if Path(path).exists()
+    ]
+
+    try:
+        result = subprocess.run(
+            ["getcap", "-r", *existing_paths],
+            capture_output=True,
+            text=True,
+            timeout=15
+        )
+
+        return [
+            line
+            for line in result.stdout.splitlines()
+            if line
+        ]
+
+    except Exception:
+        return []
 
 
 def collect_filesystem_info():

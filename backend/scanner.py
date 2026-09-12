@@ -23,23 +23,15 @@ def run_scan(privileged=False):
     scan = {
         "project": "KernelShield",
         "version": "0.1.0",
-
+        "scan_mode": "Privileged" if privileged else "Standard",
         "system": collect_system_info(),
-
         "kernel": collect_kernel_info(),
-
         "network": collect_network_info(privileged=privileged),
-
         "services": collect_services_info(),
-
         "users": collect_users_info(),
-
         "filesystem": collect_filesystem_info(),
-
         "security": collect_security_info(),
-
         "containers": collect_container_info(),
-
         "processes": {
             "process_count": len(processes),
             "processes": processes,
@@ -48,7 +40,6 @@ def run_scan(privileged=False):
     }
 
     return scan
-
 
 if __name__ == "__main__":
 

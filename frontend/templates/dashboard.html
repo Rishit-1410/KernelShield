@@ -224,7 +224,142 @@
     color: #94a3b8;
     font-size: 14px;
 }
+.scan-meta {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+    font-size: 13px;
+    color: #94a3b8;
+}
+
+.scan-meta strong {
+    color: #cbd5e1;
+}
+
+.scan-complete {
+    color: #86efac;
+    font-weight: 600;
+}
+        .ai-section {
+            background: linear-gradient(135deg, #1e293b 0%, #172033 100%);
+            border: 1px solid #3b4b66;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        .ai-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 18px;
+        }
+
+        .ai-header h2 {
+            margin: 0;
+        }
+
+        .ai-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 6px 11px;
+            border-radius: 999px;
+            background: #064e3b;
+            color: #a7f3d0;
+            font-size: 12px;
+            font-weight: bold;
+            border: 1px solid #065f46;
+        }
+
+        .ai-model {
+            color: #94a3b8;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .ai-summary {
+            background: #111827;
+            border: 1px solid #334155;
+            border-radius: 10px;
+            padding: 18px;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .ai-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .ai-panel {
+            background: #111827;
+            border: 1px solid #334155;
+            border-radius: 10px;
+            padding: 18px;
+        }
+
+        .ai-panel h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .ai-item {
+            border-bottom: 1px solid #334155;
+            padding: 12px 0;
+        }
+
+        .ai-item:last-child {
+            border-bottom: none;
+        }
+
+        .ai-item-title {
+            font-weight: bold;
+            margin: 8px 0;
+        }
+
+        .ai-item-text {
+            color: #cbd5e1;
+            line-height: 1.5;
+            font-size: 14px;
+        }
+
+        .ai-recommendations {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .ai-recommendations li {
+            color: #cbd5e1;
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+
+        .ai-disclaimer {
+            margin-top: 18px;
+            padding: 12px 15px;
+            border-radius: 8px;
+            background: #172033;
+            color: #94a3b8;
+            font-size: 12px;
+            border: 1px solid #334155;
+        }
+
+        .ai-disabled {
+            background: #3f1d1d;
+            color: #fecaca;
+            border-color: #7f1d1d;
+        }
+
         @media (max-width: 900px) {
+            .ai-grid {
+                grid-template-columns: 1fr;
+            }
+
+
             .cards {
                 grid-template-columns: repeat(2, 1fr);
             }
@@ -319,6 +454,135 @@
             Overall Risk Level:
             <strong>{{ report.risk.risk_level }}</strong>
         </p>
+
+    </div>
+
+
+    <div class="ai-section">
+
+        <div class="ai-header">
+            <div>
+                <h2>🤖 AI Security Assessment</h2>
+                <div class="ai-model">
+                    Local defensive analysis powered by
+                    {{ report.ai_analysis.model or "KernelShield fallback analysis" }}
+                </div>
+            </div>
+
+            {% if report.ai_analysis.enabled %}
+                <span class="ai-badge">● AI ANALYSIS ACTIVE</span>
+            {% else %}
+                <span class="ai-badge ai-disabled">● FALLBACK MODE</span>
+            {% endif %}
+        </div>
+
+        <div class="ai-summary">
+            <strong>Executive Summary</strong>
+            <p>
+                {{ report.ai_analysis.executive_summary }}
+            </p>
+        </div>
+
+        <div class="ai-grid">
+
+            <div class="ai-panel">
+
+                <h3>Priority Findings</h3>
+
+                {% for item in report.ai_analysis.priority_findings %}
+
+                    <div class="ai-item">
+
+                        <span class="severity {{ item.severity }}">
+                            {{ item.severity }}
+                        </span>
+
+                        <div class="ai-item-title">
+                            {{ item.title }}
+                        </div>
+
+                        <div class="ai-item-text">
+                            {{ item.why_it_matters }}
+                        </div>
+
+                    </div>
+
+                {% else %}
+
+                    <p class="empty">
+                        No AI-prioritized findings available.
+                    </p>
+
+                {% endfor %}
+
+            </div>
+
+
+            <div class="ai-panel">
+
+                <h3>Attack Path Assessment</h3>
+
+                {% for item in report.ai_analysis.attack_path_analysis %}
+
+                    <div class="ai-item">
+
+                        <div class="ai-item-title">
+                            {{ item.title }}
+                        </div>
+
+                        <div class="ai-item-text">
+                            {{ item.assessment }}
+                        </div>
+
+                    </div>
+
+                {% else %}
+
+                    <p class="empty">
+                        No correlated attack paths identified.
+                    </p>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+
+        <div class="ai-panel" style="margin-top: 20px;">
+
+            <h3>Recommended Actions</h3>
+
+            {% if report.ai_analysis.recommendations %}
+
+                <ul class="ai-recommendations">
+
+                    {% for recommendation in report.ai_analysis.recommendations %}
+
+                        <li>{{ recommendation }}</li>
+
+                    {% endfor %}
+
+                </ul>
+
+            {% else %}
+
+                <p class="empty">
+                    No additional AI recommendations available.
+                </p>
+
+            {% endif %}
+
+        </div>
+
+
+        <div class="ai-disclaimer">
+            <strong>Assessment boundary:</strong>
+            KernelShield's deterministic detection engine remains authoritative
+            for findings, severity, risk score, and attack-path correlation.
+            The AI layer provides evidence-based defensive interpretation and
+            does not establish exploitability.
+        </div>
 
     </div>
 

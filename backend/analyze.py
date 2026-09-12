@@ -8,6 +8,7 @@ from backend.analyzer.attack_paths import (
     find_capability_process_paths,
 )
 from backend.analyzer.report import build_report
+from backend.ai.analyst import generate_ai_analysis
 
 
 def main():
@@ -53,6 +54,7 @@ def main():
         risk,
         attack_paths,
     )
+    report["ai_analysis"] = generate_ai_analysis(report)
 
     # ---------------------------------------------------------
     # Save report

@@ -1,19 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environments
 .venv/
 venv/
 env/
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
+
+# Testing / tooling
 .pytest_cache/
 .mypy_cache/
-*.log
+.coverage
+htmlcov/
+
+# Environment / secrets
 .env
 .env.*
 !.env.example
-scan.json
-scan-*.json
-report.json
+
+# Logs
+*.log
+
+# Temporary/editor files
 *.swp
 *.swo
 *.backup
+*.bak
+*~
+
+# Generated scan/report data
+scan.json
+scan-*.json
+report.json

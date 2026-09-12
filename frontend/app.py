@@ -21,6 +21,7 @@ from backend.analyzer.attack_paths import (
     find_capability_process_paths,
 )
 from backend.analyzer.report import build_report
+from backend.ai.analyst import generate_ai_analysis
 
 app = Flask(__name__)
 
@@ -31,9 +32,11 @@ REPORT_FILE = BASE_DIR / "report.json"
 
 def load_report():
     if not REPORT_FILE.exists():
-        return {
+        report = {
             "project": "KernelShield",
             "version": "unknown",
+            "timestamp": None,
+            "scan_mode": "Standard",
             "risk": {
                 "score": 0,
                 "risk_level": "UNKNOWN",
@@ -42,9 +45,19 @@ def load_report():
             "findings": [],
             "attack_paths": []
         }
+    else:
+        with open(REPORT_FILE, "r") as file:
+            report = json.load(file)
 
-    with open(REPORT_FILE, "r") as file:
-        return json.load(file)
+    # Ensure older or empty reports are compatible with the dashboard.
+    if "ai_analysis" not in report:
+        report["ai_analysis"] = generate_ai_analysis(report)
+
+        # Persist upgraded reports when possible.
+        with open(REPORT_FILE, "w") as file:
+            json.dump(report, file, indent=4)
+
+    return report
 
 
 def perform_scan(privileged=False):
@@ -84,6 +97,9 @@ def perform_scan(privileged=False):
         risk,
         attack_paths
     )
+
+    # AI-assisted defensive assessment
+    report["ai_analysis"] = generate_ai_analysis(report)
 
     # Save report
     with open(REPORT_FILE, "w") as file:
