@@ -106,3 +106,24 @@ If the local AI service is unavailable, KernelShield falls back to a determinist
                     ┌─────────────────────┐
                     │ Flask Web Dashboard │
                     └─────────────────────┘
+## 📸 Dashboard Preview
+
+### Security Dashboard
+
+![KernelShield Security Dashboard](docs/screenshots/dashboard-overview.png)
+
+### Security Findings
+
+![KernelShield Security Findings](docs/screenshots/security-findings.png)
+
+### Attack Path Analysis
+
+![KernelShield Attack Path Analysis](docs/screenshots/attack-path-analysis.png)
+
+### AI Security Assessment
+
+![KernelShield AI Security Assessment](docs/screenshots/ai-analysis.png)
+
+## 🏗️ System Architecture
+
+![KernelShield Architecture](docs/architecture.png)
