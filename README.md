@@ -67,45 +67,10 @@ This prevents the language model from inventing vulnerabilities, CVEs, processes
 
 If the local AI service is unavailable, KernelShield falls back to a deterministic security assessment.
 
----
+---\n\n## 🏗️ Architecture
 
-## 🏗️ Architecture
+![KernelShield Architecture](docs/architecture.png)
 
-```text
-                    ┌─────────────────────┐
-                    │     Linux Host      │
-                    └──────────┬──────────┘
-                               │
-                               ▼
-                    ┌─────────────────────┐
-                    │     Collectors      │
-                    │ system/kernel/net   │
-                    │ users/processes/etc │
-                    └──────────┬──────────┘
-                               │
-                               ▼
-                    ┌─────────────────────┐
-                    │ Analysis Engine     │
-                    │ Rules + Correlation │
-                    └──────────┬──────────┘
-                               │
-             ┌─────────────────┼─────────────────┐
-             ▼                 ▼                 ▼
-      ┌─────────────┐   ┌─────────────┐   ┌─────────────┐
-      │  Findings   │   │ Risk Engine │   │ Attack Paths│
-      └─────────────┘   └─────────────┘   └─────────────┘
-             │                 │                 │
-             └─────────────────┼─────────────────┘
-                               ▼
-                    ┌─────────────────────┐
-                    │ Local AI Analyst    │
-                    │ Ollama + Qwen2.5    │
-                    └──────────┬──────────┘
-                               │
-                               ▼
-                    ┌─────────────────────┐
-                    │ Flask Web Dashboard │
-                    └─────────────────────┘
 ## 📸 Dashboard Preview
 
 ### Security Dashboard
@@ -123,7 +88,3 @@ If the local AI service is unavailable, KernelShield falls back to a determinist
 ### AI Security Assessment
 
 ![KernelShield AI Security Assessment](docs/screenshots/ai-analysis.png)
-
-## 🏗️ System Architecture
-
-![KernelShield Architecture](docs/architecture.png)
