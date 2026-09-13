@@ -67,7 +67,9 @@ This prevents the language model from inventing vulnerabilities, CVEs, processes
 
 If the local AI service is unavailable, KernelShield falls back to a deterministic security assessment.
 
----\n\n## 🏗️ Architecture
+---
+
+## 🏗️ Architecture
 
 ![KernelShield Architecture](docs/architecture.png)
 
